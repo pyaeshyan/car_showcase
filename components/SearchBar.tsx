@@ -26,37 +26,32 @@ const SearchBar = () => {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (manufacturer.trim() === "" && model.trim() === "") {
-      return alert("Please provide some input");
+      return alert('Please input something');
     }
 
-    updateSearchParams(model.toLowerCase(), manufacturer.toLowerCase());
+    handleUpdateSearchParam(model.toLocaleLowerCase(), manufacturer.toLocaleLowerCase());
   };
 
-  const updateSearchParams = (model: string, manufacturer: string) => {
-    // Create a new URLSearchParams object using the current URL search parameters
-    const searchParams = new URLSearchParams(window.location.search);
+  const handleUpdateSearchParam = (title: string, manufacturer: string) => {
+    const searchparam = new URLSearchParams(window.location.search);
 
-    // Update or delete the 'model' search parameter based on the 'model' value
     if (model) {
-      searchParams.set("model", model);
+      searchparam.set('model', model);
     } else {
-      searchParams.delete("model");
+      searchparam.delete('model');
     }
 
-    // Update or delete the 'manufacturer' search parameter based on the 'manufacturer' value
     if (manufacturer) {
-      searchParams.set("manufacturer", manufacturer);
+      searchparam.set('manufacturer', manufacturer);
     } else {
-       searchParams.delete("manufacturer");
+      searchparam.delete('manufacturer');
     }
 
-    // Generate the new pathname with the updated search parameters
-    const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
+    const newPathname = `${window.location.pathname}?${searchparam.toString()}`
+    router.push(newPathname, { scroll: false });
 
-    router.push(newPathname);
-  };
+  }
 
   return (
     <form className='searchbar' onSubmit={handleSearch}>
